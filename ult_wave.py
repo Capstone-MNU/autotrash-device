@@ -33,5 +33,11 @@ def get_dist():
 
 
 if __name__ == "__main__":
-    while True:
-        print(f'Distance: {get_dist()}cm')
+    try:
+        while True:
+            print("Distance: ", get_dist(), "cm")
+            time.sleep(1)
+
+    except KeyboardInterrupt:
+        print("Measurement stopped by user")
+        GPIO.cleanup()
