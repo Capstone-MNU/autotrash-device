@@ -7,30 +7,23 @@ GPIO.setmode(GPIO.BCM)
 GPIO.setup(servo_pin, GPIO.OUT)
 
 pwm = GPIO.PWM(servo_pin, 50)
-pwm.start(3.0)  # 0.6ms
+pwm.start(2.5)  # 0.6ms
 
-time.sleep(2.0)
-pwm.ChangeDutyCycle(0.0)
 
-pwm.stop()
-GPIO.cleanup()
+def rotate_plate():
+    pwm.ChangeDutyCycle(7.5)  # 7.5 is the duty cycle for 45°
+    time.sleep(1)
+    pwm.ChangeDutyCycle(2.5)  # 2.5 is the duty cycle for 0°
 
-"""2"""
-servo_pin = 18
-GPIO.setmode(GPIO.BCM)
-GPIO.setup(servo_pin, GPIO.OUT)
-pwm = GPIO.PWM(servo_pin, 50)
-pwm.start(3.0)
 
-for cnt in range(0, 3):
-    pwm.ChangeDutyCycle(1.0)
-    time.sleep(1.0)
-    pwm.ChangeDutyCycle(3.5)
-    time.sleep(1.0)
-    pwm.ChangeDutyCycle(7.5)
-    time.sleep(1.0)
+if __name__ == "__main__":
+    try:
+        while True:
+            print("Rotate: Plate")
+            rotate_plate()
+            time.sleep(0.5)
 
-pwm.ChangeDutyCycle(0.0)
-
-pwm.stop()
-GPIO.cleanup()
+    except KeyboardInterrupt:
+        print("Measurement stopped by user")
+        pwm.stop()
+        GPIO.cleanup()
