@@ -20,21 +20,22 @@ def set_angle(angle):
 
 
 def rotate_until(target_angle):
-    rotations = target_angle // 180
-    for _ in range(int(rotations)):
-        # 180도로 회전
-        set_angle(180)
-        time.sleep(1)
-
-    # 남은 각도로 회전
-    remaining_angle = target_angle % 180
-    set_angle(remaining_angle)
+    set_angle(target_angle)
+    # rotations = target_angle // 180
+    # for _ in range(int(rotations)):
+    #     # 180도로 회전
+    #     set_angle(180)
+    #     time.sleep(1)
+    #
+    # # 남은 각도로 회전
+    # remaining_angle = target_angle % 180
+    # set_angle(remaining_angle)
 
 
 if __name__ == "__main__":
     try:
         while True:
-            dest = float(input("Enter angle (greater than 180): "))
+            dest = float(input("Enter angle: "))
             rotate_until(dest)
 
     except KeyboardInterrupt:
