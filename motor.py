@@ -1,53 +1,49 @@
-from gpiozero import Servo
+from gpiozero.pins.pigpio import PiGPIOFactory
+from gpiozero import AngularServo
 from time import sleep
 
-servo_pin_pillar = 18
-servo_pillar = Servo(servo_pin_pillar)
+pigpio_factory = PiGPIOFactory()
 
-servo_pin_plate = 17
-servo_plate = Servo(servo_pin_plate)
+servo_pin_pillar = 13
+servo_pillar = AngularServo(servo_pin_pillar, pin_factory=pigpio_factory, min_angle=-90, max_angle=90)
+
+servo_pin_plate = 12
+servo_plate = AngularServo(servo_pin_plate, pin_factory=pigpio_factory, min_angle=-90, max_angle=90)
 
 
-def rotate_pillar(cls):
+def rotate_pillar(cls, switch):
     """
     rotate pillar by class of trash
     :param cls: detected class of trash
+    :param switch: direction of rotate, 1 = clockwise, -1 = counterclockwise
     :return:
     """
-    angle = cls * 90
+    angle = cls * 90 * switch
     servo_pillar.angle = angle
     sleep(1)
 
 
 def rotate_plate():
     """
+    #servo_plate.angle = 0
     rotate plate for drop trash
     :return:
     """
     servo_plate.angle = 45
     sleep(1)
+    servo_plate.angle = -45
 
 
 # 서보 모터 작동 테스트(python motor.py로 실행)
 if __name__ == "__main__":
-    servo_pillar.angle = -90
-    sleep(1)
-    servo_pillar.angle = -45
-    sleep(1)
-    servo_pillar.angle = 0
-    sleep(1)
-    servo_pillar.angle = 45
-    sleep(1)
+    print("rotate pillar1")
     servo_pillar.angle = 90
     sleep(1)
-
-    servo_plate.angle = -90
+    print("rotate pillar2")
+    servo_pillar.angle = -90
     sleep(1)
-    servo_plate.angle = -45
-    sleep(1)
-    servo_plate.angle = 0
-    sleep(1)
-    servo_plate.angle = 45
-    sleep(1)
+    print("rotate plate1")
     servo_plate.angle = 90
     sleep(1)
+    print("rotate plate2")
+    servo_plate.angle = -90

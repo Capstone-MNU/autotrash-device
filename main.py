@@ -14,6 +14,8 @@ def measure_capacity():
     :return:
     """
 
+schedule.every().monday.do(measure_capacity)
+
 if __name__ == "__main__":
     while cls < 0:
         print(f'detecting trash . . . ')
