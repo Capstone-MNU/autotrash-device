@@ -47,3 +47,4 @@ if __name__ == "__main__":
     sleep(1)
     print("rotate plate2")
     servo_plate.angle = -90
+    sleep(1)
