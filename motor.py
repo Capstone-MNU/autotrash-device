@@ -1,7 +1,7 @@
 import pigpio
-
 from time import sleep
-
+from ult_wave import get_dist
+from request import save_dist
 
 pi = pigpio.pi() 
 pin_plate = 12
@@ -49,6 +49,7 @@ def rotate_plate():
     sleep(1)
     pi.set_servo_pulsewidth(pin_pillar, deg_0)
     sleep(1)
+    save_dist(get_dist())
 
 
 
