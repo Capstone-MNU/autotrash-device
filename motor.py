@@ -14,7 +14,7 @@ deg_180 = 2340 # position clockwise
     
 def rotate(cls):
     rotate_pillar(cls)
-    rotate_plate() 
+    rotate_plate(cls) 
 
 def deg_to_pw(deg):
     return 600 + 10 * deg
@@ -44,12 +44,12 @@ def rotate_pillar(cls):
     else:
         print("no trash to rotate")
     
-def rotate_plate():
+def rotate_plate(cls):
     pi.set_servo_pulsewidth(pin_pillar, deg_90)
     sleep(1)
     pi.set_servo_pulsewidth(pin_pillar, deg_0)
     sleep(1)
-    save_dist(get_dist())
+    save_dist(get_dist(), cls)
 
 
 
