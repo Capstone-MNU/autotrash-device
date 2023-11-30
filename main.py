@@ -1,9 +1,17 @@
 from ult_wave import get_dist
-from motor import rotate_pillar, rotate_plate
+from motor import rotate
 from time import sleep
 import subprocess
 import requests
 import os
+
+classes = [
+    'can',
+    'glass',
+    'plastic',
+    'pet_clean',
+    'pet_label'
+]
 
 cls = -1
 
@@ -26,6 +34,11 @@ if __name__ == "__main__":
             response = requests.post(server_url, files={'image': image_file})
 
         print(response.text)
+        
+        cls = response.text
+        if len(cls):
+            rotate(cls)
+
         os.remove(image_path)
 
         sleep(capture_interval)

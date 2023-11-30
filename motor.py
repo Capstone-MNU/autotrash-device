@@ -1,60 +1,76 @@
-from gpiozero.pins.pigpio import PiGPIOFactory
-from gpiozero import AngularServo
+import pigpio
+
 from time import sleep
 
-pigpio_factory = PiGPIOFactory()
 
-servo_pin_pillar = 13
-servo_pillar = AngularServo(servo_pin_pillar, pin_factory=pigpio_factory, min_angle=-90, max_angle=90)
-servo_pillar.angle = 0
-sleep(3)
-servo_pin_plate = 12
-servo_plate = AngularServo(servo_pin_plate, pin_factory=pigpio_factory, min_angle=-90, max_angle=90)
-servo_plate.angle = 0
-sleep(3)
+pi = pigpio.pi() 
+pin_plate = 12
+pin_pillar = 13
 
-def rotate_pillar(cls, switch):
-    """
-    rotate pillar by class of trash
-    :param cls: detected class of trash
-    :param switch: direction of rotate, 1 = clockwise, -1 = counterclockwise
-    :return:
-    """
-    if cls == 0:
-        angle = 0
-    elif cls == 1:
-        angle = 90
-    elif cls == 2:
-        angle = 90  # 2번회전
-    elif cls == 3:
-        angle = -90
+deg_0 = 660 # position anti-clockwise
+deg_90 = 1500 # middle
+deg_180 = 2340 # position clockwise
+
     
-    servo_pillar.angle = angle
+def rotate(cls):
+    rotate_pillar(cls)
+    rotate_plate() 
+
+def deg_to_pw(deg):
+    return 600 + 10 * deg
+    
+def rotate_pillar(cls):
+    
+    pi.set_servo_pulsewidth(pin_pillar, deg_0)
     sleep(1)
-
-
+    
+    if cls == 'can':
+        return
+    elif cls == 'glass':
+        pi.set_servo_pulsewidth(pin_pillar, deg_90)
+        sleep(1)
+        pi.set_servo_pulsewidth(pin_pillar, deg_0)
+        sleep(1)
+        
+    elif cls == 'plastic':
+        pi.set_servo_pulsewidth(pin_pillar, deg_180)
+        sleep(1)
+        pi.set_servo_pulsewidth(pin_pillar, deg_0)
+        sleep(1)
+    elif cls == 'pet_clean':
+        pi.set_servo_pulsewidth(pin_pillar, deg_90)
+        sleep(1)
+        
+    else:
+        print("no trash to rotate")
+    
 def rotate_plate():
-    """
-    #servo_plate.angle = 0
-    rotate plate for drop trash
-    :return:
-    """
-    servo_plate.angle = 45
+    pi.set_servo_pulsewidth(pin_pillar, deg_90)
     sleep(1)
-    servo_plate.angle = -45
+    pi.set_servo_pulsewidth(pin_pillar, deg_0)
+    sleep(1)
 
 
-# 서보 모터 작동 테스트(python motor.py로 실행)
-if __name__ == "__main__":
-    print("rotate pillar1")
-    servo_pillar.angle = 90
-    sleep(3)
-    print("rotate pillar2")
-    servo_pillar.angle = -90
-    sleep(3)
-    print("rotate plate1")
-    servo_plate.angle = 90
-    sleep(3)
-    print("rotate plate2")
-    servo_plate.angle = -90
-    sleep(3)
+
+
+if __name__ == '__main__':
+    while True:
+        # pi.set_servo_pulsewidth(pin_plate, deg_0) # position anti-clockwise
+        # sleep(1)
+        # pi.set_servo_pulsewidth(pin_pillar, deg_0) # position anti-clockwise
+        # sleep(1)
+        
+        pi.set_servo_pulsewidth(pin_plate, deg_90) # middle
+        sleep(1)
+        # pi.set_servo_pulsewidth(pin_pillar, deg_90) # middle
+        # sleep(1)
+    
+        # pi.set_servo_pulsewidth(pin_plate, deg_180) # position clockwise
+        # sleep(1)
+        # pi.set_servo_pulsewidth(pin_pillar, deg_180) # position clockwise
+        # sleep(1)
+        
+        # pi.set_servo_pulsewidth(pin_plate, deg_90) # middle
+        # sleep(1)
+        # pi.set_servo_pulsewidth(pin_pillar, deg_90) # middle
+        # sleep(1)
