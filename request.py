@@ -1,16 +1,16 @@
 import requests
 from time import sleep
 
-server_url = 'https://7d49-119-200-89-54.ngrok-free.app'
+server_url = 'https://0411-119-200-89-54.ngrok-free.app'
 
 def send_image(image_file):
     return requests.post(server_url + '/detect', files={'image': image_file})
 
 def save_dist(dist, cls):
-    requests.get(server_url + '/ultwave', values={'dist': dist, 'cls': cls})
+    return requests.get(server_url + '/ultwave', params={'dist': dist, 'cls': cls})
 
 def ask_ecop():
-    requests.get(server_url + '/ecop')
+    return requests.get(server_url + '/ecop')
     
 
 if __name__ == "__main__":

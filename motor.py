@@ -1,7 +1,6 @@
 import pigpio
 from time import sleep
 from ult_wave import get_dist
-from request import save_dist
 
 pi = pigpio.pi() 
 pin_plate = 12
@@ -45,13 +44,10 @@ def rotate_pillar(cls):
         print("no trash to rotate")
     
 def rotate_plate(cls):
-    pi.set_servo_pulsewidth(pin_pillar, deg_90)
+    pi.set_servo_pulsewidth(pin_plate, deg_90)
     sleep(1)
-    pi.set_servo_pulsewidth(pin_pillar, deg_0)
+    pi.set_servo_pulsewidth(pin_plate, deg_0)
     sleep(1)
-    save_dist(get_dist(), cls)
-
-
 
 
 if __name__ == '__main__':
